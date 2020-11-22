@@ -6,8 +6,9 @@ export default makeStyles((theme: Theme) => ({
     },
     flexEnd: {
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: theme.spacing(1,2)
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        padding: theme.spacing(1,2),
+        flexDirection: 'column'
     }
 }))
