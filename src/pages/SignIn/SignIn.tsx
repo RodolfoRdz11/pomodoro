@@ -11,20 +11,7 @@ import authActions from "src/redux/auth/actions";
 import Register from "./Register/Register";
 import Login from "./Login/Login";
 
-function TabPanel(props: any) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <Typography
-            component="div"
-            role="tabpanel"
-            hidden={value !== index}
-            {...other}
-        >
-            {value === index && <Box p={1}>{children}</Box>}
-        </Typography>
-    );
-}
+import TabPanel from "src/components/TabPanel";
 
 const tabs = [
     { value: 0, label: 'LOGIN' },
