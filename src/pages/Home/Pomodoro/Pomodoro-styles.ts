@@ -6,7 +6,8 @@ export default makeStyles((theme: Theme) => ({
         paddingTop: theme.spacing(4),
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flexDirection: 'column'
     },
     paper: {
         padding: theme.spacing(2,4),
@@ -51,5 +52,25 @@ export default makeStyles((theme: Theme) => ({
         [theme.breakpoints.down("sm")]: {
             fontSize: '.8em'
         }
+    },
+    flexEnd: {
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end'
+    },
+    taskContainer: {
+        marginTop: 20,
+        width: '40%',
+        [theme.breakpoints.down("sm")]: {
+            width: '100%'
+        }
+    },
+    spaceBetween: {
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: theme.spacing(2)
     }
 }));

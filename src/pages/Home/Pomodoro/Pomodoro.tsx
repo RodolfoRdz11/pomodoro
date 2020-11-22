@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Paper, Chip, Container, IconButton } from "@material-ui/core";
-import { Pause as PauseIcon, PlayArrow as PlayIcon, Restore as ResetIcon } from "@material-ui/icons";
+import { Typography, Paper, Chip, Container, IconButton, Collapse, Card, CardContent, Button } from "@material-ui/core";
+import { Pause as PauseIcon, PlayArrow as PlayIcon, Restore as ResetIcon, Edit as EditIcon } from "@material-ui/icons";
 import clsx from "clsx";
 import soundFile from "src/assets/sound.mp3";
 
@@ -8,6 +8,10 @@ import useStyles from "./Pomodoro-styles";
 import { RootState } from "src/redux/rootReducer";
 import { useDispatch, useSelector } from "react-redux";
 import pomodoroActions from "src/redux/pomodoro/actions";
+
+import Task from "src/models/Task";
+import AddZone from "src/components/AddZone";
+import TaskDialog from "src/components/TaskDialog";
 
 const types = {
     POMODORO: 'pomodoro',
@@ -18,12 +22,17 @@ const types = {
 function PomodoroApp() {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const user = useSelector((state: RootState) => state.auth.user);
     const pomodoro = useSelector((state: RootState) => state.pomodoro);
+    const activeTasks = useSelector((state: RootState) => state.tasks.activeTasks);
+
     const start = () => dispatch(pomodoroActions.start());
     const pause = () => dispatch(pomodoroActions.pause());
     const reset = () => dispatch(pomodoroActions.reset());
 
     const [timeInterval, setTimeInterval] = useState<any>(null);
+    const [taskDialog, setTaskDialog] = useState<any>({ open: false, isNew: true, task: { description: '' } });
+    const [activeTask, setActiveTask] = useState<Task>();
     const sound = new Audio(soundFile);
 
     const format = (time: number) => {
@@ -52,10 +61,20 @@ function PomodoroApp() {
         reset();
     }
 
+    function getActiveTaskByUser(userId: number) {
+        return activeTasks.find((task: any) => task.userId === userId);
+    }
+
     useEffect(() => {
         sound.play();
         //eslint-disable-next-line
-    }, [pomodoro.type])
+    }, [pomodoro.type]);
+
+    useEffect(() => {
+        const task = getActiveTaskByUser(user.id);
+        if (task) setActiveTask(task);
+        //eslint-disable-next-line
+    }, [activeTasks, user.id]);
 
     return (
         <Container maxWidth="lg" className={classes.container}>
@@ -94,7 +113,43 @@ function PomodoroApp() {
                 </div>
             </Paper>
 
-        </Container>
+            <Collapse in={Boolean(activeTask?.userId)} className={classes.taskContainer}>
+                <Card>
+                    <CardContent>
+                        <Typography> {activeTask?.description} </Typography>
+                    </CardContent>
+                    <div className={classes.spaceBetween}>
+                        <IconButton onClick={() => setTaskDialog({ open: true, isNew: false, task: activeTask})}>
+                            <EditIcon />
+                        </IconButton>
+                        <Button 
+                            variant="contained" 
+                            color="primary"
+                            disableElevation
+                        >
+                            Finish
+                        </Button>
+                    </div>
+                </Card>
+            </Collapse>
+
+            <TaskDialog
+                open={taskDialog.open}
+                task={taskDialog.task}
+                isNew={taskDialog.isNew}
+                handleOpen={() => setTaskDialog({ open: false, isNew: true, task: { description: '' } })}
+            />
+
+            {!activeTask?.id && (
+                <AddZone
+                    text="Add task"
+                    onClick={() => setTaskDialog({ open: true, isNew: true, task: { description: '' } })}
+                    disabled={Boolean(getActiveTaskByUser(user.id))}
+                />
+            )}
+
+
+        </Container >
     )
 }
 
