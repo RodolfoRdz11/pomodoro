@@ -115,10 +115,10 @@ function PomodoroApp() {
                 <Typography className={classes.timerText}> {format(pomodoro.time)} </Typography>
 
                 <div className={classes.actionsContainer}>
-                    <IconButton className={classes.actionButton} onClick={handleStart} >
+                    <IconButton className={classes.actionButton} onClick={handleStart} disabled={!activeTask.id}>
                         {pomodoro.isStarted ? <PauseIcon className={classes.actionIcon} /> : <PlayIcon className={classes.actionIcon} />}
                     </IconButton>
-                    <IconButton className={classes.actionButton} onClick={handleReset}>
+                    <IconButton className={classes.actionButton} onClick={handleReset} disabled={!activeTask.id}>
                         <ResetIcon className={classes.actionIcon} />
                     </IconButton>
                 </div>
