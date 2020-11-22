@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 import { timeConversion } from "src/utils";
 
 import ListAlt from "@material-ui/icons/ListAlt";
@@ -14,6 +14,7 @@ import useStyles from "./Summary-styles";
 import TotalCard from "src/components/TotalCard";
 import TaskChart from "./TasksChart/TaskChart";
 import TaskList from "./TaskList/TaskList";
+import SummaryPDFDialog from "./SummaryPDFDialog/SummaryPDFDialog";
 
 interface TotalTime {
     totalWorked: string;
@@ -27,6 +28,7 @@ function Summary() {
 
     const [ownFinishedTasks, setOwnFinishedTasks] = useState<Array<Task>>([]);
     const [totalTime, setTotalTime] = useState<TotalTime>({ totalWorked: '0 Sec', totalRested: '0 Sec' });
+    const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
     useEffect(() => {
         let totalWorked = 0;
@@ -53,6 +55,16 @@ function Summary() {
 
     return (
         <Grid container>
+            <Grid item xs={12} className={classes.flexEnd}>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    disableElevation
+                    onClick={() => setDialogOpen(!dialogOpen)}
+                >
+                    CREATE PDF
+                </Button>
+            </Grid>
             <Grid container item xs={12}>
                 <Grid item md={4} xs={12} className={classes.item}>
                     <TotalCard
@@ -91,6 +103,16 @@ function Summary() {
             <Grid item xs={12} md={6} className={classes.item}>
                <TaskList finishedTasks={ownFinishedTasks} />
             </Grid>
+
+            <SummaryPDFDialog 
+                open={dialogOpen}
+                handleOpen={() => setDialogOpen(!dialogOpen)}
+                username={user.name}
+                finishedTasks={ownFinishedTasks}
+                totalWorked={totalTime.totalWorked}
+                totalRested={totalTime.totalRested}
+            />
+            
         </Grid>
     )
 }
