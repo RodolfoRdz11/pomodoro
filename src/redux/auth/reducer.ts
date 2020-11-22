@@ -51,6 +51,7 @@ const reducer = (state: State = initialState, action: any) => {
                 isAuth: true,
                 user: payload.user,
                 isLoading: false,
+                validation: initialState.validation
             }
         }
 
