@@ -64,6 +64,7 @@ function PomodoroApp() {
     }
 
     function handleFinish() {
+        setActiveTask({  userId: 0, description: '' });
         clearInterval(timeInterval);
         finish(activeTask);
     }

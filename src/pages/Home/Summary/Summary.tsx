@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
+import { timeConversion } from "src/utils";
 
 import ListAlt from "@material-ui/icons/ListAlt";
 import TimeIcon from "@material-ui/icons/AvTimer";
@@ -11,40 +12,33 @@ import { useSelector } from "react-redux";
 import useStyles from "./Summary-styles";
 import TotalCard from "src/components/TotalCard";
 import TaskChart from "./TasksChart/TaskChart";
-
-function timeConversion(millisec: number) {
-    var seconds = (millisec / 1000).toFixed(1);
-    var minutes = (millisec / (1000 * 60)).toFixed(1);
-    var hours = (millisec / (1000 * 60 * 60)).toFixed(1);
-    var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);
-
-    if (parseInt(seconds) < 60) {
-        return seconds + " Sec";
-    } else if (parseInt(minutes) < 60) {
-        return minutes + " Min";
-    } else if (parseInt(hours) < 24) {
-        return hours + " Hrs";
-    } else {
-        return days + " Days"
-    }
-}
+import TaskList from "./TaskList/TaskList";
 
 function Summary() {
     const classes = useStyles();
     const user =  useSelector((state: RootState) => state.auth.user);
     const finishedTasks = useSelector((state: RootState) => state.tasks.finishedTasks);
 
+    const [ownFinishedTasks, setOwnFinishedTasks] = useState<Array<Task>>([]);
     const [totalTime, setTotalTime] = useState<string>('');
 
     useEffect(() => {
-
         let total = 0;
-        finishedTasks.forEach((task: Task) => {
+        ownFinishedTasks.forEach((task: Task) => {
             total += task.time ? task.time : 0;
         })
         setTotalTime(timeConversion(total));
+    }, [ownFinishedTasks])
 
-    }, [finishedTasks])
+
+    useEffect(() => {
+        const _ownFinishedTasks: Array<Task> = [];
+        finishedTasks.forEach((task: Task) => {
+            if(task.userId === user.id)
+                _ownFinishedTasks.push(task);
+        })
+        setOwnFinishedTasks(_ownFinishedTasks);
+    },[finishedTasks, user.id])
 
     return (
         <Grid container>
@@ -52,7 +46,7 @@ function Summary() {
                 <Grid item md={4} xs={12} className={classes.item}>
                     <TotalCard
                         icon={ListAlt}
-                        data={finishedTasks.length}
+                        data={ownFinishedTasks.length}
                         secondaryText="Finished tasks"
                         backgroundColor="#303F9F"
                         color="#fff"
@@ -71,8 +65,11 @@ function Summary() {
             <Grid item xs={12} md={6} className={classes.item}>
                 <TaskChart 
                     user={user}
-                    finishedTasks={finishedTasks}
+                    finishedTasks={ownFinishedTasks}
                 />
+            </Grid>
+            <Grid item xs={12} md={6} className={classes.item}>
+               <TaskList finishedTasks={ownFinishedTasks} />
             </Grid>
         </Grid>
     )
