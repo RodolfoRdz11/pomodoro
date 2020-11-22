@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Paper, Chip, Container, IconButton } from "@material-ui/core";
 import { Pause as PauseIcon, PlayArrow as PlayIcon, Restore as ResetIcon } from "@material-ui/icons";
 import clsx from "clsx";
@@ -54,6 +54,7 @@ function PomodoroApp() {
 
     useEffect(() => {
         sound.play();
+        //eslint-disable-next-line
     }, [pomodoro.type])
 
     return (

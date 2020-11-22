@@ -7,7 +7,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { store, history, persistor } from "src/redux/store";
 
-import Login from "./Login/Login";
+import SignIn from "./SignIn/SignIn";
 import Home from "./Home/Home";
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
                 <ConnectedRouter history={history} >
                     <Switch>
                         <Redirect exact from="/" to="/app" />
-                        <Route exact path="/login" component={Login} />
+                        <Route exact path="/login" component={SignIn} />
                         <Route path="/app" component={Home} />
                     </Switch>
                 </ConnectedRouter>

@@ -19,18 +19,6 @@ export default makeStyles((theme: Theme) => ({
     content: {
         padding: theme.spacing(3, 4)
     },
-    icon: {
-        background: '#1ab2ff',
-        color: theme.palette.common.white,
-        borderRadius: theme.shape.borderRadius,
-        padding: theme.spacing(1),
-        position: 'absolute',
-        top: -32,
-        left: theme.spacing(3),
-        height: 45,
-        width: 45,
-        fontSize: 16
-    },
     loginForm: {
         marginTop: theme.spacing(3)
     },
@@ -55,5 +43,13 @@ export default makeStyles((theme: Theme) => ({
         fontWeight: 500,
         fontSize: '2.5em',
         paddingTop: 20
+    },
+    subtitle:  {
+        fontWeight: theme.typography.fontWeightBold,
+        fontSize: 18,
+        textAlign: 'center'
+    },
+    errorText: {
+        color: theme.palette.error.main
     }
 }));
