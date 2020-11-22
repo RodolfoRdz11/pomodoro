@@ -1,7 +1,6 @@
 import {createStore,applyMiddleware} from "redux";
-import {createBrowserHistory} from "history";
 import {routerMiddleware} from "connected-react-router";
-import rootReducer, { RootState }  from "./rootReducer";
+import rootReducer, { RootState, history }  from "./rootReducer";
 import rootSaga from "./rootSaga";
 import {persistStore ,persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -9,7 +8,6 @@ import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import {composeWithDevTools} from 'redux-devtools-extension';
 import createSagaMiddleware from "redux-saga";
 
-export const history = createBrowserHistory();
 const sagaMiddleware = createSagaMiddleware();
 
 const persistConfig = {

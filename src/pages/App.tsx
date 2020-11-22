@@ -4,27 +4,39 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import { ConnectedRouter } from "connected-react-router";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
-import { store, history, persistor } from "src/redux/store";
+import { store, persistor } from "src/redux/store";
+import { history } from "src/redux/rootReducer";
 
 import PrivateRoute from "src/components/PrivateRoute";
 import SignIn from "./SignIn/SignIn";
 import Home from "./Home/Home";
 
+const theme = createMuiTheme({
+    palette: {
+        primary: { main: '#303F9F' },
+        secondary: { main: '#448AFF' },
+    }
+});
+
+
 function App() {
     return (
-        <Provider store={store}>
-          <CssBaseline />
-            <PersistGate persistor={persistor}>
-                <ConnectedRouter history={history} >
-                    <Switch>
-                        <Redirect exact from="/" to="/app" />
-                        <Route exact path="/login" component={SignIn} />
-                        <PrivateRoute path="/app" component={Home} />
-                    </Switch>
-                </ConnectedRouter>
-            </PersistGate>
-        </Provider>
+        <ThemeProvider theme={theme}>
+            <Provider store={store}>
+                <CssBaseline />
+                <PersistGate persistor={persistor}>
+                    <ConnectedRouter history={history} >
+                        <Switch>
+                            <Redirect exact from="/" to="/app" />
+                            <Route exact path="/login" component={SignIn} />
+                            <PrivateRoute path="/app" component={Home} />
+                        </Switch>
+                    </ConnectedRouter>
+                </PersistGate>
+            </Provider>
+        </ThemeProvider>
     );
 }
 

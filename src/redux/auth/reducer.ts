@@ -66,6 +66,10 @@ const reducer = (state: State = initialState, action: any) => {
             }
         }
 
+        case actions.LOGOUT: {
+            return initialState;
+        }
+
         default:
             return state;
     }    

@@ -42,7 +42,7 @@ export default makeStyles((theme: Theme) => ({
     chip: {
         fontWeight: 'bolder',
         [theme.breakpoints.down("sm")]: {
-            fontSize: '.8em'
+            fontSize: '.5em'
         }
     },
     activeChip: {
@@ -50,7 +50,7 @@ export default makeStyles((theme: Theme) => ({
         background: theme.palette.success.main,
         color: '#fff',
         [theme.breakpoints.down("sm")]: {
-            fontSize: '.8em'
+            fontSize: '.5em'
         }
     },
     flexEnd: {

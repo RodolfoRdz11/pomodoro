@@ -1,7 +1,7 @@
 import { takeEvery, select, put } from "redux-saga/effects";
 import actions from "./actions";
 import User from "src/models/User";
-import { history } from "../store";
+import { history } from "../rootReducer";
 
 function* login({ payload }: any) {
     const users = yield select(state => state.users.users);
@@ -17,9 +17,13 @@ function* login({ payload }: any) {
     } else {
         yield put(actions.setError('Invalid user'))
     }
+}
 
+function* logout() {
+    yield history.push('/login');
 }
 
 export default function* index() {
     yield takeEvery(actions.LOGIN, login);
+    yield takeEvery(actions.LOGOUT, logout);
 }

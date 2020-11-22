@@ -24,5 +24,9 @@ export default makeStyles((theme: Theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
+    },
+    container:{
+        height: "80vh",
+        marginTop: 64
     }
 }));
