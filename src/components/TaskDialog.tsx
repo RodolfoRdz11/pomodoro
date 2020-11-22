@@ -21,7 +21,7 @@ interface Props {
 function TaskDialog({ open, handleOpen, isNew, task }: Props) {
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.auth.user);
-    const activeTasks = useSelector((state: RootState) => state.tasks.tasks);
+    const finishedTasks = useSelector((state: RootState) => state.tasks.finishedTasks);
     const addTask = (task: Task) => dispatch(taskActions.add(task));
     const updateTask = (task: Task) => dispatch(taskActions.update(task));
     const [description, setDescription] = useState<string>('');
@@ -29,7 +29,7 @@ function TaskDialog({ open, handleOpen, isNew, task }: Props) {
     function handleTask() {
         if(isNew)
             addTask({
-                id: activeTasks.length + 1,
+                id: finishedTasks.length + 1,
                 userId: user.id,
                 description,
                 time: 0

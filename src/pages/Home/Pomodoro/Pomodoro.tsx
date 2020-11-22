@@ -8,6 +8,7 @@ import useStyles from "./Pomodoro-styles";
 import { RootState } from "src/redux/rootReducer";
 import { useDispatch, useSelector } from "react-redux";
 import pomodoroActions from "src/redux/pomodoro/actions";
+import taskActions from "src/redux/tasks/actions";
 
 import Task from "src/models/Task";
 import AddZone from "src/components/AddZone";
@@ -29,10 +30,11 @@ function PomodoroApp() {
     const start = () => dispatch(pomodoroActions.start());
     const pause = () => dispatch(pomodoroActions.pause());
     const reset = () => dispatch(pomodoroActions.reset());
+    const finish = (task: Task) => dispatch(taskActions.finish(task));
 
     const [timeInterval, setTimeInterval] = useState<any>(null);
     const [taskDialog, setTaskDialog] = useState<any>({ open: false, isNew: true, task: { description: '' } });
-    const [activeTask, setActiveTask] = useState<Task>();
+    const [activeTask, setActiveTask] = useState<Task>({  userId: 0, description: '' });
     const sound = new Audio(soundFile);
 
     const format = (time: number) => {
@@ -61,6 +63,11 @@ function PomodoroApp() {
         reset();
     }
 
+    function handleFinish() {
+        clearInterval(timeInterval);
+        finish(activeTask);
+    }
+
     function getActiveTaskByUser(userId: number) {
         return activeTasks.find((task: any) => task.userId === userId);
     }
@@ -72,7 +79,10 @@ function PomodoroApp() {
 
     useEffect(() => {
         const task = getActiveTaskByUser(user.id);
-        if (task) setActiveTask(task);
+        if (task) 
+            setActiveTask(task);
+        else 
+            setActiveTask({  userId: 0, description: '' });
         //eslint-disable-next-line
     }, [activeTasks, user.id]);
 
@@ -126,6 +136,7 @@ function PomodoroApp() {
                             variant="contained" 
                             color="primary"
                             disableElevation
+                            onClick={handleFinish}
                         >
                             Finish
                         </Button>

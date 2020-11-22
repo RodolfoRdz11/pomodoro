@@ -2,12 +2,12 @@ import actions from "./actions";
 import Task from "src/models/Task";
 
 interface State {
-    tasks: Array<Task>;   
+    finishedTasks: Array<Task>;   
     activeTasks: Array<Task>;
 }
 
 const initialState: State = {
-    tasks: [],
+    finishedTasks: [],
     activeTasks: []
 }
 
@@ -34,6 +34,32 @@ const reducer = (state: State = initialState, action: any) => {
             return {
                 ...state,
                 activeTasks
+            }
+        }
+
+        case actions.FINISH: {
+            const finishedTasks = [...state.finishedTasks];
+            const activeTasks = [...state.activeTasks];
+            const index = activeTasks.findIndex((task: Task) => task.id === payload.task.id);
+
+            finishedTasks.push(payload.task)
+            activeTasks.splice(index, 1);
+
+            return {
+                ...state,
+                finishedTasks,
+                activeTasks
+            }
+        }
+
+        case actions.UPDATE_FINISHED: {
+            const finishedTasks = [...state.finishedTasks];
+            const index = finishedTasks.findIndex((task: Task) => task.id === payload.task.id);
+            finishedTasks[index] = payload.task;
+
+            return {
+                ...state,
+                finishedTasks
             }
         }
 

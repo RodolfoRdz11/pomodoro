@@ -11,6 +11,7 @@ interface State {
     type: string;
     isStarted: boolean;
     breakCount: number;
+    timeAccumulated: number;
 }
 
 const initialState: State = {
@@ -18,6 +19,7 @@ const initialState: State = {
     time: time.pomodoro,
     type: 'pomodoro',
     breakCount: 0,
+    timeAccumulated: 0
 }
 
 const reducer = (state: State = initialState, action: any) => {
@@ -44,7 +46,8 @@ const reducer = (state: State = initialState, action: any) => {
             return {
                 ...state,
                 type: 'pomodoro',
-                time: time.pomodoro
+                time: time.pomodoro,
+                timeAccumulated: state.timeAccumulated + time.pomodoro
             }
         }
 

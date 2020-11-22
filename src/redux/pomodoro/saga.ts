@@ -1,5 +1,6 @@
 import { put, takeEvery, select } from "redux-saga/effects";
 import actions from "./actions";
+import taskActions from "../tasks/actions";
 
 function* verifyValues() {
     const pomodoro = yield select(state => state.pomodoro);
@@ -16,6 +17,17 @@ function* verifyValues() {
     }
 }
 
+function* setAccumulatedTime({ payload }: any) {
+    const { task } = payload;
+    const pomodoro = yield select(state => state.pomodoro);
+
+    task.time = pomodoro.timeAccumulated + (1500000 - pomodoro.time);
+
+    yield put(taskActions.updateFinished(task));
+    yield put(actions.reset());
+}
+
 export default function* index() {
     yield takeEvery(actions.START, verifyValues);
+    yield takeEvery(taskActions.FINISH, setAccumulatedTime);
 }
