@@ -27,14 +27,14 @@ function TaskDialog({ open, handleOpen, isNew, task }: Props) {
     const [description, setDescription] = useState<string>('');
 
     function handleTask() {
-        if(isNew)
+        if (isNew)
             addTask({
                 id: finishedTasks.length + 1,
                 userId: user.id,
                 description,
                 time: 0
             });
-        else 
+        else
             updateTask({
                 ...task,
                 description
@@ -43,8 +43,10 @@ function TaskDialog({ open, handleOpen, isNew, task }: Props) {
     }
 
     useEffect(() => {
-        if(task.id && !isNew) 
+        if (task.id && !isNew)
             setDescription(task.description);
+        else 
+            setDescription('');
     }, [task, isNew])
 
     return (
@@ -74,7 +76,7 @@ function TaskDialog({ open, handleOpen, isNew, task }: Props) {
                     disableElevation
                 >
                     {isNew ? 'Add' : 'Save'}
-                    </Button>
+                </Button>
             </DialogActions>
         </Dialog>
     );
