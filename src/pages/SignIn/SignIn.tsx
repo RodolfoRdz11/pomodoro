@@ -1,12 +1,14 @@
 import React from "react";
-import { Card, Divider, Grid, Typography, Box, Tabs, Tab } from "@material-ui/core";
+import { Card, Divider, Grid, Typography, Box, Tabs, Tab, Snackbar } from "@material-ui/core";
 import useStyles from "./SignIn-styles";
 import { useTheme } from "@material-ui/core/styles";
 import SwipeableViews from 'react-swipeable-views';
+import { Alert } from "@material-ui/lab";
 
 import { RootState } from "src/redux/rootReducer";
 import { useSelector, useDispatch } from "react-redux";
 import authActions from "src/redux/auth/actions";
+import notificationActions from "src/redux/notifications/actions";
 
 import Register from "./Register/Register";
 import Login from "./Login/Login";
@@ -23,6 +25,8 @@ function SignIn() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const currentTab = useSelector((state: RootState) => state.auth.currentTab);
+    const notification = useSelector((state: RootState) => state.notification);
+    const clearNotification = () => dispatch(notificationActions.clear())
     const setCurrentTab = (tab: number) => dispatch(authActions.setTab(tab));
 
     const handleTabsChange = (event: any, value: number) => {
@@ -64,6 +68,16 @@ function SignIn() {
                     </SwipeableViews>
                 </Box>
 
+                <Snackbar
+                    open={notification.open}
+                    autoHideDuration={4000}
+                    onClose={clearNotification}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                >
+                    <Alert severity={notification.type} variant="filled">
+                        {notification.message}
+                    </Alert>
+                </Snackbar>
 
             </Card>
         </Grid>

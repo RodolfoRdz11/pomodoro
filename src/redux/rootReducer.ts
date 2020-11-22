@@ -6,6 +6,7 @@ import pomodoro from "./pomodoro/reducer";
 import auth from "./auth/reducer";
 import users from "./users/reducer";
 import tasks from "./tasks/reducer";
+import notification from "./notifications/reducer";
 
 export const history = createBrowserHistory();
 
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     pomodoro,
     auth, 
     users,
-    tasks
+    tasks,
+    notification
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
