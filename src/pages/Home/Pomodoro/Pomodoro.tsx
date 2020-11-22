@@ -13,6 +13,7 @@ import taskActions from "src/redux/tasks/actions";
 import Task from "src/models/Task";
 import AddZone from "src/components/AddZone";
 import TaskDialog from "src/components/TaskDialog";
+import useUnload from "src/hooks/useUnload";
 
 const types = {
     POMODORO: 'pomodoro',
@@ -26,7 +27,7 @@ function PomodoroApp() {
     const user = useSelector((state: RootState) => state.auth.user);
     const pomodoro = useSelector((state: RootState) => state.pomodoro);
     const activeTasks = useSelector((state: RootState) => state.tasks.activeTasks);
-
+    
     const start = () => dispatch(pomodoroActions.start());
     const pause = () => dispatch(pomodoroActions.pause());
     const reset = () => dispatch(pomodoroActions.reset());
@@ -34,8 +35,14 @@ function PomodoroApp() {
 
     const [timeInterval, setTimeInterval] = useState<any>(null);
     const [taskDialog, setTaskDialog] = useState<any>({ open: false, isNew: true, task: { description: '' } });
-    const [activeTask, setActiveTask] = useState<Task>({  userId: 0, description: '' });
+    const [activeTask, setActiveTask] = useState<Task>({ userId: 0, description: '' });
     const sound = new Audio(soundFile);
+
+    useUnload(activeTask, (e: any) => {
+        e.preventDefault();
+        e.returnValue = '';
+    });
+
 
     const format = (time: number) => {
         let minute: number = Math.floor(time / 60000);
@@ -64,7 +71,7 @@ function PomodoroApp() {
     }
 
     function handleFinish() {
-        setActiveTask({  userId: 0, description: '' });
+        setActiveTask({ userId: 0, description: '' });
         clearInterval(timeInterval);
         finish(activeTask);
     }
@@ -82,8 +89,8 @@ function PomodoroApp() {
         const task = getActiveTaskByUser(user.id);
         if (task) 
             setActiveTask(task);
-        else 
-            setActiveTask({  userId: 0, description: '' });
+        else
+            setActiveTask({ userId: 0, description: '' });
         //eslint-disable-next-line
     }, [activeTasks, user.id]);
 
@@ -130,11 +137,11 @@ function PomodoroApp() {
                         <Typography> {activeTask?.description} </Typography>
                     </CardContent>
                     <div className={classes.spaceBetween}>
-                        <IconButton onClick={() => setTaskDialog({ open: true, isNew: false, task: activeTask})}>
+                        <IconButton onClick={() => setTaskDialog({ open: true, isNew: false, task: activeTask })}>
                             <EditIcon />
                         </IconButton>
-                        <Button 
-                            variant="contained" 
+                        <Button
+                            variant="contained"
                             color="primary"
                             disableElevation
                             onClick={handleFinish}
