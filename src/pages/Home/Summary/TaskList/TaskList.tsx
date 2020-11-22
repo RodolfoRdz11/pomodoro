@@ -22,8 +22,9 @@ function TaskList({ finishedTasks }: Props) {
                             <CardContent>
                                 <Typography> {task.description} </Typography>
                             </CardContent>
-                            <div className={classes.flexEnd}>
-                                <Typography> Time: {timeConversion(task.time ? task.time : 0)} </Typography>
+                            <div className={classes.spaceBetween}>
+                                <Typography className={classes.text}> Worked time: {timeConversion(task.time ? task.time : 0)} </Typography>
+                                <Typography className={classes.text}> Rested time: {timeConversion(task.restedTime ? task.restedTime : 0)} </Typography>
                             </div>
                         </Card>
                     ))}

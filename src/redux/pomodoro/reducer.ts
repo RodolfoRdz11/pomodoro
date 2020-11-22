@@ -12,6 +12,7 @@ interface State {
     isStarted: boolean;
     breakCount: number;
     timeAccumulated: number;
+    restedTime: number;
 }
 
 const initialState: State = {
@@ -19,7 +20,8 @@ const initialState: State = {
     time: time.pomodoro,
     type: 'pomodoro',
     breakCount: 0,
-    timeAccumulated: 0
+    timeAccumulated: 0,
+    restedTime: 0,
 }
 
 const reducer = (state: State = initialState, action: any) => {
@@ -56,7 +58,8 @@ const reducer = (state: State = initialState, action: any) => {
                 ...state,
                 type: 'short_break',
                 time: time.shortBreak,
-                breakCount: state.breakCount + 1
+                breakCount: state.breakCount + 1,
+                restedTime: state.restedTime + time.shortBreak
             }
         }
 
@@ -66,6 +69,7 @@ const reducer = (state: State = initialState, action: any) => {
                 type: 'long_break',
                 time: time.longBreak,
                 breakCount: 0,
+                restedTime: state.restedTime + time.longBreak
             }
         }
 

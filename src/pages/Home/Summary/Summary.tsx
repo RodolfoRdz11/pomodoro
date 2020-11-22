@@ -4,6 +4,7 @@ import { timeConversion } from "src/utils";
 
 import ListAlt from "@material-ui/icons/ListAlt";
 import TimeIcon from "@material-ui/icons/AvTimer";
+import AlarmIcon from "@material-ui/icons/AlarmOff";
 
 import Task from "src/models/Task";
 import { RootState } from "src/redux/rootReducer";
@@ -14,20 +15,30 @@ import TotalCard from "src/components/TotalCard";
 import TaskChart from "./TasksChart/TaskChart";
 import TaskList from "./TaskList/TaskList";
 
+interface TotalTime {
+    totalWorked: string;
+    totalRested: string;
+}
+
 function Summary() {
     const classes = useStyles();
     const user =  useSelector((state: RootState) => state.auth.user);
     const finishedTasks = useSelector((state: RootState) => state.tasks.finishedTasks);
 
     const [ownFinishedTasks, setOwnFinishedTasks] = useState<Array<Task>>([]);
-    const [totalTime, setTotalTime] = useState<string>('');
+    const [totalTime, setTotalTime] = useState<TotalTime>({ totalWorked: '0 Sec', totalRested: '0 Sec' });
 
     useEffect(() => {
-        let total = 0;
+        let totalWorked = 0;
+        let totalRested = 0;
         ownFinishedTasks.forEach((task: Task) => {
-            total += task.time ? task.time : 0;
+            totalWorked += task.time ? task.time : 0;
+            totalRested += task.restedTime ? task.restedTime : 0;
         })
-        setTotalTime(timeConversion(total));
+        setTotalTime({
+            totalWorked: timeConversion(totalWorked),
+            totalRested: timeConversion(totalRested)
+        });
     }, [ownFinishedTasks])
 
 
@@ -55,8 +66,17 @@ function Summary() {
                 <Grid item md={4} xs={12} className={classes.item}>
                     <TotalCard
                         icon={TimeIcon}
-                        data={totalTime}
-                        secondaryText="Total time"
+                        data={totalTime.totalWorked}
+                        secondaryText="Worked time"
+                        backgroundColor="#303F9F"
+                        color="#fff"
+                    />
+                </Grid>
+                <Grid item md={4} xs={12} className={classes.item}>
+                    <TotalCard
+                        icon={AlarmIcon}
+                        data={totalTime.totalRested}
+                        secondaryText="Rested time"
                         backgroundColor="#303F9F"
                         color="#fff"
                     />

@@ -1,11 +1,15 @@
 import { makeStyles, Theme } from "@material-ui/core";
 
 export default makeStyles((theme: Theme) => ({
-    flexEnd: {
+    spaceBetween: {
         padding: theme.spacing(1,2),
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-end'
+        justifyContent: 'space-between',
+        [theme.breakpoints.down('sm')]: {
+            alignItems: 'flex-start',
+            flexDirection: 'column'
+        }
     },
     item: {
         margin: theme.spacing(1,2),
@@ -17,5 +21,10 @@ export default makeStyles((theme: Theme) => ({
         fontWeight: 550,
         color: '#b3b3b3',
         textAlign: 'center'
+    },
+    text: {
+        fontWeight: 500,
+        color: '#999',
+        fontSize: 14
     }
 }))

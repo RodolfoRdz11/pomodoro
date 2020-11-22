@@ -3,4 +3,5 @@ export default interface Task {
     userId: number;
     description: string;
     time?: number;
+    restedTime?: number;
 }

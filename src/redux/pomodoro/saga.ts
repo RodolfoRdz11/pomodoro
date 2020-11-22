@@ -22,6 +22,7 @@ function* setAccumulatedTime({ payload }: any) {
     const pomodoro = yield select(state => state.pomodoro);
 
     task.time = pomodoro.timeAccumulated + (1500000 - pomodoro.time);
+    task.restedTime = pomodoro.restedTime;
 
     yield put(taskActions.updateFinished(task));
     yield put(actions.reset());
